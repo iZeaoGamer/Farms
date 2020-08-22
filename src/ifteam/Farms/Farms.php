@@ -25,7 +25,7 @@ class Farms extends PluginBase implements Listener {
 		$this->farmConfig = new Config($this->getDataFolder()."farmlist.yml", Config::YAML);
 		$this->farmData = $this->farmConfig->getAll();
 		
-		$this->speedConfig = new Config($this->getDataFolder()."speed.yml", Config::YAML, [ "growing-time" => 1200,"vip-growing-time" => 600 ] );
+		$this->speedConfig = new Config($this->getDataFolder()."speed.yml", Config::YAML, [ "growing-time" => 1200,"islander-growing-time" => 600,"mythic-growing-time" => 100, "legendary-growing-time" => 50, "void-growing-time" => 1] );
 		$this->speedData = $this->speedConfig->getAll();
 		
 		$this->getScheduler()->scheduleRepeatingTask(new FarmsTask($this), 20);
@@ -38,7 +38,7 @@ class Farms extends PluginBase implements Listener {
 		$this->speedConfig->save();
 	}
 	public function onBlock(PlayerInteractEvent $event) {
-		if (! $event->getPlayer()->hasPermission("Farms")and ! $event->getPlayer()->hasPermission("Farms.VIP" )) return;
+		if (! $event->getPlayer()->hasPermission("permission.islander") return;
 		$block = $event->getBlock()->getSide(1 );
 		
 		// Cocoa bean
@@ -61,7 +61,93 @@ class Farms extends PluginBase implements Listener {
 					$this->farmData[$key]['damage'] = 0;
 					$this->farmData[$key]['level'] = $block->getLevel()->getFolderName();
 					$this->farmData[$key]['time'] = $this->makeTimestamp(date("Y-m-d H:i:s"));
-					$this->farmData[$key]['growtime'] = $this->speedData[$event->getPlayer()->hasPermission("Farms.VIP")? "vip-growing-time" : "growing-time"];
+					$this->farmData[$key]['growtime'] = $this->speedData[$event->getPlayer()->hasPermission("permission.islander")? "islander-growing-time" : "growing-time"];
+					break;
+				}
+			}
+		}
+		    }elseif (! $event->getPlayer()->hasPermission("permission.mythic") return;
+		$block = $event->getBlock()->getSide(1 );
+		
+		// Cocoa bean
+		if ($event->getItem()->getId() == Item::DYE and $event->getItem()->getDamage() == 3) {
+			$tree = $event->getBlock()->getSide($event->getFace() );
+			// Jungle wood
+			if ($tree->getId() == Block::WOOD and $tree->getDamage() == 3) {
+				$event->getBlock()->getLevel()->setBlock($event->getBlock()->getSide($event->getFace() ), new CocoaBeanBlock($event->getFace() ), true, true );
+				return;
+			}
+		}
+		
+		// Farmland or sand
+		if ($event->getBlock()->getId() == Item::FARMLAND or $event->getBlock()->getId() == Item::SAND or $event->getBlock()->getId() == Item::GRASS or $event->getBlock()->getId() == Item::DIRT) {
+			foreach($this->crops as $crop){
+				if ($event->getItem()->getId() == $crop["item"]) {
+					$key = $block->x.".".$block->y.".".$block->z;
+					
+					$this->farmData[$key]['id'] = $crop["block"];
+					$this->farmData[$key]['damage'] = 0;
+					$this->farmData[$key]['level'] = $block->getLevel()->getFolderName();
+					$this->farmData[$key]['time'] = $this->makeTimestamp(date("Y-m-d H:i:s"));
+					$this->farmData[$key]['growtime'] = $this->speedData[$event->getPlayer()->hasPermission("permission.mythic")? "mythic-growing-time" : "growing-time"];
+					break;
+				}
+			}
+		}
+		
+		
+			     }elseif (! $event->getPlayer()->hasPermission("permission.legendary") return;
+		$block = $event->getBlock()->getSide(1 );
+		
+		// Cocoa bean
+		if ($event->getItem()->getId() == Item::DYE and $event->getItem()->getDamage() == 3) {
+			$tree = $event->getBlock()->getSide($event->getFace() );
+			// Jungle wood
+			if ($tree->getId() == Block::WOOD and $tree->getDamage() == 3) {
+				$event->getBlock()->getLevel()->setBlock($event->getBlock()->getSide($event->getFace() ), new CocoaBeanBlock($event->getFace() ), true, true );
+				return;
+			}
+		}
+		
+		// Farmland or sand
+		if ($event->getBlock()->getId() == Item::FARMLAND or $event->getBlock()->getId() == Item::SAND or $event->getBlock()->getId() == Item::GRASS or $event->getBlock()->getId() == Item::DIRT) {
+			foreach($this->crops as $crop){
+				if ($event->getItem()->getId() == $crop["item"]) {
+					$key = $block->x.".".$block->y.".".$block->z;
+					
+					$this->farmData[$key]['id'] = $crop["block"];
+					$this->farmData[$key]['damage'] = 0;
+					$this->farmData[$key]['level'] = $block->getLevel()->getFolderName();
+					$this->farmData[$key]['time'] = $this->makeTimestamp(date("Y-m-d H:i:s"));
+					$this->farmData[$key]['growtime'] = $this->speedData[$event->getPlayer()->hasPermission("permission.legendary")? "legendary-growing-time" : "growing-time"];
+					break;
+				}
+			}
+		}
+				      }elseif (! $event->getPlayer()->hasPermission("permission.void") return;
+		$block = $event->getBlock()->getSide(1 );
+		
+		// Cocoa bean
+		if ($event->getItem()->getId() == Item::DYE and $event->getItem()->getDamage() == 3) {
+			$tree = $event->getBlock()->getSide($event->getFace() );
+			// Jungle wood
+			if ($tree->getId() == Block::WOOD and $tree->getDamage() == 3) {
+				$event->getBlock()->getLevel()->setBlock($event->getBlock()->getSide($event->getFace() ), new CocoaBeanBlock($event->getFace() ), true, true );
+				return;
+			}
+		}
+		
+		// Farmland or sand
+		if ($event->getBlock()->getId() == Item::FARMLAND or $event->getBlock()->getId() == Item::SAND or $event->getBlock()->getId() == Item::GRASS or $event->getBlock()->getId() == Item::DIRT) {
+			foreach($this->crops as $crop){
+				if ($event->getItem()->getId() == $crop["item"]) {
+					$key = $block->x.".".$block->y.".".$block->z;
+					
+					$this->farmData[$key]['id'] = $crop["block"];
+					$this->farmData[$key]['damage'] = 0;
+					$this->farmData[$key]['level'] = $block->getLevel()->getFolderName();
+					$this->farmData[$key]['time'] = $this->makeTimestamp(date("Y-m-d H:i:s"));
+					$this->farmData[$key]['growtime'] = $this->speedData[$event->getPlayer()->hasPermission("permission.void")? "legendary-growing-time" : "growing-time"];
 					break;
 				}
 			}
