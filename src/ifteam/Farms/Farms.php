@@ -38,7 +38,7 @@ class Farms extends PluginBase implements Listener {
 		$this->speedConfig->save();
 	}
 	public function onBlock(PlayerInteractEvent $event) {
-		if (! $event->getPlayer()->hasPermission("permission.islander") return;
+		if ($event->getPlayer()->hasPermission("permission.islander")){
 		$block = $event->getBlock()->getSide(1 );
 		
 		// Cocoa bean
@@ -66,7 +66,7 @@ class Farms extends PluginBase implements Listener {
 				}
 			}
 		}
-		    }elseif (! $event->getPlayer()->hasPermission("permission.mythic") return;
+		    }elseif ($event->getPlayer()->hasPermission("permission.mythic")){
 		$block = $event->getBlock()->getSide(1 );
 		
 		// Cocoa bean
@@ -96,7 +96,7 @@ class Farms extends PluginBase implements Listener {
 		}
 		
 		
-			     }elseif (! $event->getPlayer()->hasPermission("permission.legendary") return;
+			     }elseif ($event->getPlayer()->hasPermission("permission.legendary")){;
 		$block = $event->getBlock()->getSide(1 );
 		
 		// Cocoa bean
@@ -124,7 +124,7 @@ class Farms extends PluginBase implements Listener {
 				}
 			}
 		}
-				      }elseif (! $event->getPlayer()->hasPermission("permission.void") return;
+				      }elseif (!$event->getPlayer()->hasPermission("permission.void")) return;
 		$block = $event->getBlock()->getSide(1 );
 		
 		// Cocoa bean
